@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b6e63">
+<title>Rodagem</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#edf1f3;--sf:#fff;--ink:#14232b;--mut:#5b6e77;--ln:#d3dce0;--ac:#0b6e63;--on:#fff;--bad:#b3261e;--warn:#a35f00;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1519;--sf:#172126;--ink:#e5eef0;--mut:#93a7af;--ln:#27353b;--ac:#4cc9b0;--on:#06201b;--bad:#ff8a80;--warn:#ffb74d;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0e1519;--sf:#172126;--ink:#e5eef0;--mut:#93a7af;--ln:#27353b;--ac:#4cc9b0;--on:#06201b;--bad:#ff8a80;--warn:#ffb74d;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+header{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;align-items:center;gap:8px;max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 10px) 16px 8px}
+header .car{flex:1;min-width:0}
+header .car b,header select{display:block;font:650 1.05rem/1.2 inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+header select{border:0;background:none;color:var(--ink);padding:0}
+header small{color:var(--mut);font-size:.8rem}
+main{max-width:520px;margin:0 auto;padding:4px 16px calc(96px + env(safe-area-inset-bottom,0px))}
+h2{font-size:1rem;margin:22px 0 8px;font-weight:650;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+h2 small{font-weight:400;color:var(--mut);font-size:.8rem}
+h3{margin:0 0 12px;font-size:1.1rem}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--sf);border-top:1px solid var(--ln);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{border:0;background:none;color:var(--mut);font-size:.7rem;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 6px;min-width:58px;position:relative}
+nav i{font-style:normal;font-size:1.3rem;line-height:1.1}
+nav .on{color:var(--ac);font-weight:650}
+nav .plus i{background:var(--ac);color:var(--on);width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:2rem;margin-top:-22px;box-shadow:0 3px 10px #0004}
+nav .dot{position:absolute;top:0;right:12px;min-width:16px;height:16px;border-radius:8px;background:var(--bad);color:#fff;font-size:.65rem;line-height:16px;padding:0 4px}
+.hero{background:var(--ac);color:var(--on);border-radius:16px;padding:16px 18px 14px;display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+.hero b{display:block;font-size:2.5rem;line-height:1.05;font-weight:700;font-variant-numeric:tabular-nums}
+.hero span{opacity:.85;font-size:.85rem}
+.hero .r{text-align:right}
+.hero .r b{font-size:1.25rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.grid>div,.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:10px 12px}
+.card{padding:14px}
+.grid small,.mut{color:var(--mut);font-size:.78rem}
+.grid small{display:block}
+.grid b,.num{font-variant-numeric:tabular-nums}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+li.e{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:auto 1fr auto;gap:0 10px;align-items:center;cursor:pointer}
+li.e .ic{font-size:1.3rem;width:28px;text-align:center}
+li.e b{font-weight:600;font-size:.95rem}
+li.e small{display:block;color:var(--mut);font-size:.8rem;font-variant-numeric:tabular-nums}
+li.e .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw}
+li.e .r{text-align:right;font-variant-numeric:tabular-nums}
+.mh{display:flex;justify-content:space-between;color:var(--mut);font-size:.8rem;margin:14px 2px 6px;font-weight:600}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
+.chips button{white-space:nowrap;border-radius:20px;padding:6px 12px;font-size:.82rem}
+.chips .on{background:var(--ac);color:var(--on);border-color:var(--ac)}
+label{display:block;font-size:.8rem;color:var(--mut);margin:0 0 10px}
+input,select,textarea{font:inherit;color:var(--ink)}
+label input:not([type=checkbox]),label select,label textarea{width:100%;margin-top:4px;padding:11px;background:var(--bg);border:1px solid var(--ln);border-radius:10px}
+textarea{resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chk{display:flex;gap:10px;align-items:center;color:var(--ink);font-size:.92rem}
+.chk input{width:20px;height:20px;margin:0;accent-color:var(--ac);flex:none}
+.its{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin:0 0 12px}
+.its .chk{font-size:.85rem;margin:0;padding:4px 0}
+.hint{color:var(--mut);font-size:.8rem;margin:0 0 12px}
+.err{color:var(--bad)}
+button,.btn{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--ln);background:var(--sf);color:var(--ink);padding:10px 14px;display:inline-block;text-align:center}
+.pri{background:var(--ac);color:var(--on);border-color:var(--ac);font-weight:650}
+.dang{color:var(--bad);border-color:var(--bad)}
+.sm{padding:6px 10px;font-size:.8rem}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.bar.end{justify-content:flex-end;margin:6px 0 0}
+.bar .sp{flex:1}
+.bar>.btn,.bar>button{flex:none}
+:focus-visible{outline:3px solid var(--ac);outline-offset:1px}
+dialog{border:0;padding:0;width:100%;max-width:520px;margin:auto auto 0;border-radius:18px 18px 0 0;background:var(--sf);color:var(--ink);max-height:94vh}
+dialog::backdrop{background:#000a}
+dialog form{padding:18px 16px calc(16px + env(safe-area-inset-bottom,0px));overflow:auto;max-height:94vh}
+.tg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tg button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 2px;font-size:.72rem;line-height:1.15}
+.tg i{font-size:1.5rem;font-style:normal}
+.pl{display:grid;gap:4px}
+.pl .t{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.pl .t b{font-size:.95rem}
+.pb{height:6px;background:var(--ln);border-radius:3px;overflow:hidden;margin:4px 0}
+.pb i{display:block;height:100%;background:var(--ac);border-radius:3px}
+.late .pb i{background:var(--bad)}.soon .pb i{background:var(--warn)}
+.late .st{color:var(--bad);font-weight:650}.soon .st{color:var(--warn);font-weight:650}
+.st{font-size:.78rem;color:var(--mut);white-space:nowrap}
+.off{opacity:.5}
+.hb{display:grid;grid-template-columns:auto 1fr auto;gap:4px 8px;align-items:center;font-size:.85rem}
+.hb .b{height:10px;background:var(--ac);border-radius:0 4px 4px 0;min-width:2px}
+.hb .v{font-variant-numeric:tabular-nums;text-align:right}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--mut);font-size:10px;font-family:inherit}
+.cap{font-size:.8rem;color:var(--mut);min-height:1.2em;margin:4px 0 0}
+#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:.88rem;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20;max-width:90vw;text-align:center}
+#toast.on{opacity:1}
+.empty{color:var(--mut);padding:10px 2px;font-size:.9rem}
+.tip{background:var(--sf);border:1px dashed var(--ac);border-radius:14px;padding:12px;font-size:.88rem;margin-top:10px}
+</style>
+</head>
+<body>
+<header>
+  <div class="car" id="hcar"></div>
+  <button class="sm" data-a="km" id="hkm" aria-label="Atualizar km atual"></button>
+  <button class="sm" data-a="go" data-id="set" aria-label="Ajustes">⚙️</button>
+</header>
+<main id="v"></main>
+<nav id="nav">
+  <button data-a="go" data-id="home"><i>🏠</i>Início</button>
+  <button data-a="go" data-id="hist"><i>📋</i>Histórico</button>
+  <button data-a="new" class="plus" aria-label="Novo lançamento"><i>+</i>Lançar</button>
+  <button data-a="go" data-id="plan"><i>🔧</i>Manutenção</button>
+  <button data-a="go" data-id="rep"><i>📊</i>Relatórios</button>
+</nav>
+<dialog id="dlg"><form id="frm" method="dialog" novalidate></form></dialog>
+<input type="file" id="fin" accept=".json,.csv,application/json,text/csv,text/plain" hidden>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+(()=>{
+"use strict";
+const K="rodagem:v2",D=document,$=s=>D.querySelector(s),V=$("#v"),DLG=$("#dlg"),FRM=$("#frm");
+const TY={ab:["Abastecimento","⛽"],man:["Manutenção","🔧"],ipva:["IPVA","🏛️"],lic:["Licenciamento","📄"],seg:["Seguro","🛡️"],multa:["Multa","🚨"],ped:["Pedágio","🛣️"],est:["Estacionamento","🅿️"],lav:["Lavagem","🧽"],ace:["Peças e acessórios","🛒"],tax:["Taxas e documentos","🧾"],fin:["Financiamento","🏦"],out:["Outros","💸"],nota:["Anotação","📝"]};
+const COMB={g:"Gasolina comum",ga:"Gasolina aditivada",e:"Etanol",d:"Diesel",gnv:"GNV"};
+// [chave, nome, km, meses, tipo de despesa que conta como "feito"]
+const PLAN0=[["oleo","Óleo do motor",10000,12],["foleo","Filtro de óleo",10000,12],["rev","Revisão programada",10000,12],["far","Filtro de ar do motor",20000,24],["fcab","Filtro do ar-condicionado",10000,12],["fcomb","Filtro de combustível",20000,24],["velas","Velas de ignição",40000,48],["alin","Alinhamento e balanceamento",10000,12],["rod","Rodízio de pneus",10000,12],["freio","Fluido de freio",0,24],["past","Pastilhas e discos (inspeção)",20000,24],["arref","Líquido de arrefecimento",40000,36],["correia","Correias (inspeção)",60000,60],["pneu","Pneus (desgaste/validade)",40000,60],["bat","Bateria (teste)",0,24],["palh","Palhetas do limpador",0,12],["ipva","IPVA",0,12,"ipva"],["lic","Licenciamento",0,12,"lic"],["seg","Renovação do seguro",0,12,"seg"]];
+let S,ED=null,TRI=[],HF="all",HY="",RP="12m",IP=null,TW=null;
+
+/* ---------- util ---------- */
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const iso=x=>x.toLocaleDateString("sv-SE");
+const today=()=>iso(new Date());
+const pd=s=>{const a=s.split("-").map(Number);return new Date(a[0],a[1]-1,a[2])};
+const addM=(s,m)=>{const x=pd(s);x.setMonth(x.getMonth()+m);return iso(x)};
+const addD=(s,n)=>{const x=pd(s);x.setDate(x.getDate()+n);return iso(x)};
+const dd=(a,b)=>Math.round((pd(b)-pd(a))/864e5);
+const f=(n,d)=>(+n).toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
+const money=n=>"R$ "+f(n,2);
+const fdate=s=>s?s.slice(8,10)+"/"+s.slice(5,7)+"/"+s.slice(0,4):"";
+const MES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+const mlabel=k=>MES[+k.slice(5,7)-1]+"/"+k.slice(2,4);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+const sum=a=>a.reduce((t,e)=>t+(e.v||0),0);
+function num(s){s=String(s==null?"":s).trim().replace(/[^\d.,-]/g,"");if(!s)return NaN;
+  if(s.indexOf(",")>-1)s=s.replace(/\./g,"").replace(",",".");else if(/^\d{1,3}(\.\d{3})+$/.test(s))s=s.replace(/\./g,"");return parseFloat(s)}
+function rel(n){if(n==null)return"";const a=Math.abs(n),w=a<45?a+" dia"+(a===1?"":"s"):a<540?Math.round(a/30.4)+" meses":f(a/365,1)+" anos";return n<0?"há "+w:n===0?"hoje":"em "+w}
+let tt;function toast(t,err){const x=$("#toast");x.textContent=t;x.className="on";x.style.background=err?"var(--bad)":"";clearTimeout(tt);tt=setTimeout(()=>x.className="",err?4500:2200)}
+function dl(name,txt,type){const a=D.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;D.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+
+/* ---------- dados ---------- */
+const plan0=()=>PLAN0.map(a=>({k:a[0],n:a[1],km:a[2],m:a[3],t:a[4]||"",on:1}));
+const newCar=n=>({id:uid(),nome:n,placa:"",tanque:0,km:0,kmd:"",ini:"",kmi:0,p:plan0()});
+function norm(){
+  S.cfg=S.cfg||{};if(!S.cfg.model)S.cfg.model="claude-opus-5-5";
+  S.e=Array.isArray(S.e)?S.e:[];
+  if(!Array.isArray(S.cars)||!S.cars.length)S.cars=[newCar("Meu carro")];
+  S.cars.forEach(c=>{if(!Array.isArray(c.p))c.p=plan0()});
+  if(!S.cars.some(c=>c.id===S.car))S.car=S.cars[0].id;
+  S.e.forEach(e=>{if(!e.c)e.c=S.car});
+}
+function load(){
+  try{S=JSON.parse(localStorage.getItem(K))}catch(e){S=null}
+  if(!S||S.v!==2){S={v:2,e:[],cfg:{}};norm();
+    try{const old=JSON.parse(localStorage.getItem("abastecimentos:v1")||"[]");
+      old.forEach(o=>S.e.push({id:o.id||uid(),c:S.car,t:"ab",d:o.d,km:o.km,l:o.l,v:o.v,cheio:!!o.full}));
+      if(old.length)save()}catch(e){}}
+  norm();
+}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){toast("Não foi possível salvar neste aparelho.",1)}writeDue()}
+const car=()=>S.cars.find(c=>c.id===S.car)||S.cars[0];
+const ents=()=>S.e.filter(e=>e.c===S.car);
+
+/* ---------- km ---------- */
+function kmPts(){const c=car(),p=[];if(c.ini)p.push([c.ini,+c.kmi||0]);
+  ents().forEach(e=>{if(e.km>0)p.push([e.d,e.km])});if(c.kmd&&c.km>0)p.push([c.kmd,c.km]);
+  return p.sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:a[1]-b[1])}
+function curKm(){return kmPts().reduce((m,p)=>Math.max(m,p[1]),0)}
+function rate(){const p=kmPts();if(p.length<2)return null;const L=p[p.length-1],lim=addD(L[0],-365);
+  let a=p[0];for(const x of p)if(x[0]<=lim)a=x;const n=dd(a[0],L[0]);return n>=20&&L[1]>a[1]?(L[1]-a[1])/n:null}
+function kmAt(d){const p=kmPts();if(!p.length)return null;
+  for(let i=0;i<p.length;i++){if(p[i][0]===d)return p[i][1];if(p[i][0]>d){if(!i)return null;const a=p[i-1],b=p[i];return Math.round(a[1]+(b[1]-a[1])*dd(a[0],d)/Math.max(1,dd(a[0],b[0])))}}
+  const r=rate(),L=p[p.length-1];return r?Math.round(L[1]+r*dd(L[0],d)):null}
+
+/* ---------- consumo (método tanque cheio) ---------- */
+function fuel(){
+  const s=ents().filter(e=>e.t==="ab"&&e.km>0&&e.l>0).sort((a,b)=>a.km-b.km);
+  const st={},by={};let sk=0,sl=0,sc=0,lf=-1,al=0,ac=0,last=null;
+  s.forEach((e,i)=>{
+    if(lf>=0){al+=e.l;ac+=e.v;
+      if(e.cheio){const km=e.km-s[lf].km;
+        if(km>0&&al>0){st[e.id]={kml:km/al,ckm:ac/km,km};sk+=km;sl+=al;sc+=ac;last=km/al;
+          const k=e.comb==="e"?"e":e.comb==="d"?"d":e.comb==="gnv"?"gnv":"g",b=by[k]||(by[k]={k:0,l:0,c:0});b.k+=km;b.l+=al;b.c+=ac}
+        lf=i;al=0;ac=0}}
+    else if(e.cheio)lf=i});
+  return{st,avg:sl?sk/sl:null,ckm:sk?sc/sk:null,last,by,ser:s.filter(e=>st[e.id]).map(e=>[e.d,st[e.id].kml])};
+}
+
+/* ---------- manutenção ---------- */
+function pst(p,ck,r){
+  let ld=p.bd||"",lk=p.bk>0?+p.bk:null,est=0;
+  ents().forEach(e=>{if((e.it&&e.it.indexOf(p.k)>-1)||(p.t&&e.t===p.t)){if(e.d>ld||(e.d===ld&&e.km>0)){ld=e.d;lk=e.km>0?e.km:null}}});
+  if(ld&&lk==null&&p.km){lk=kmAt(ld);est=lk!=null}
+  if(!ld&&lk==null)return{none:1,fr:0};
+  const nk=p.km&&lk!=null?lk+p.km:null,nd=p.m&&ld?addM(ld,p.m):null,t=today();
+  const rk=nk!=null?nk-ck:null,rd=nd?dd(t,nd):null;
+  let ed=nd;if(rk!=null&&r){const x=addD(t,Math.round(Math.max(rk,0)/r));if(!ed||x<ed)ed=x}
+  const late=(rk!=null&&rk<=0)||(rd!=null&&rd<=0),soon=!late&&((rk!=null&&rk<=1000)||(rd!=null&&rd<=30));
+  let fr=0;if(p.km&&lk!=null)fr=(ck-lk)/p.km;if(p.m&&ld)fr=Math.max(fr,dd(ld,t)/(p.m*30.44));
+  return{ld,lk,est,nk,nd,rk,rd,ed,late,soon,fr};
+}
+function dueList(all){const c=car(),ck=curKm(),r=rate();
+  return c.p.filter(p=>all||p.on).map(p=>({p,s:pst(p,ck,r)})).sort((a,b)=>(b.p.on-a.p.on)||(!!b.s.late-!!a.s.late)||(!!b.s.soon-!!a.s.soon)||(!!a.s.none-!!b.s.none)||(b.s.fr-a.s.fr))}
+function writeDue(){if(!("caches"in window))return;
+  const L=dueList().filter(x=>!x.s.none).map(x=>({n:x.p.n,nd:x.s.ed||x.s.nd||"",rk:x.s.rk}));
+  caches.open("rodagem-meta").then(c=>c.put("due",new Response(JSON.stringify(L),{headers:{"content-type":"application/json"}}))).catch(()=>{})}
+
+/* ---------- gráficos (SVG leve, uma cor) ---------- */
+function bars(data,fmt){
+  const W=340,H=130,P=16,mx=Math.max(...data.map(d=>d[1]),1),bw=(W-8)/data.length;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Gastos por mês"><line x1="0" y1="${H-P}" x2="${W}" y2="${H-P}" stroke="var(--ln)"/>`;
+  data.forEach((d,i)=>{const h=d[1]/mx*(H-P-14),x=4+i*bw+bw*.18,w=bw*.64;
+    s+=`<g data-a="cap" data-id="${esc(d[2]+": "+fmt(d[1]))}"><rect x="${4+i*bw}" y="0" width="${bw}" height="${H}" fill="transparent"/>`+
+      (h>0?`<path d="M${x},${H-P}V${H-P-h+3}q0,-3 3,-3h${w-6}q3,0 3,3V${H-P}z" fill="var(--ac)"><title>${esc(d[2]+": "+fmt(d[1]))}</title></path>`:"")+
+      `<text x="${x+w/2}" y="${H-3}" text-anchor="middle">${esc(d[0])}</text></g>`});
+  return s+`<text x="0" y="9">máx ${esc(fmt(mx))}</text></svg>`}
+function line(pts,fmt,lab){
+  if(pts.length<2)return`<p class="empty">Ainda faltam dados (${pts.length}/2 pontos).</p>`;
+  const W=340,H=130,P=14,ys=pts.map(p=>p[1]),lo=Math.min(...ys),hi=Math.max(...ys),sp=hi-lo||1,
+    t0=+pd(pts[0][0]),t1=+pd(pts[pts.length-1][0]),ts=t1-t0||1,X=p=>8+(+pd(p[0])-t0)/ts*(W-16),Y=v=>P+(1-(v-lo)/sp)*(H-2*P-6);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(lab)}"><polyline fill="none" stroke="var(--ac)" stroke-width="2" stroke-linejoin="round" points="${pts.map(p=>X(p).toFixed(1)+","+Y(p[1]).toFixed(1)).join(" ")}"/>`;
+  pts.forEach(p=>{s+=`<circle data-a="cap" data-id="${esc(fdate(p[0])+": "+fmt(p[1]))}" cx="${X(p).toFixed(1)}" cy="${Y(p[1]).toFixed(1)}" r="4" fill="var(--ac)" stroke="var(--sf)" stroke-width="2"><title>${esc(fdate(p[0])+": "+fmt(p[1]))}</title></circle>`});
+  return s+`<text x="0" y="9">${esc(fmt(hi))}</text><text x="0" y="${H-2}">${esc(fmt(lo))} · ${esc(fdate(pts[0][0]))} a ${esc(fdate(pts[pts.length-1][0]))}</text></svg>`}
+function months(n){const r=[],t=new Date();for(let i=n-1;i>=0;i--)r.push(iso(new Date(t.getFullYear(),t.getMonth()-i,1)).slice(0,7));return r}
+
+/* ---------- views ---------- */
+function liE(e,F){const t=TY[e.t]||TY.out,x=F&&F.st[e.id];let sub=fdate(e.d);
+  if(e.km)sub+=" · "+f(e.km,0)+" km";if(e.t==="ab"&&e.l)sub+=" · "+f(e.l,2)+" L · "+money(e.v/e.l)+"/L"+(e.cheio?"":" · parcial");
+  return`<li class="e" data-a="edit" data-id="${e.id}"><span class="ic">${t[1]}</span><div><b>${t[0]}</b><small>${sub}</small>${e.n?`<small class="n">${esc(e.n)}</small>`:""}</div><div class="r"><b>${e.v||e.t!=="nota"?money(e.v||0):""}</b>${x?`<small>${f(x.kml,2)} km/L</small>`:""}</div></li>`}
+function plCard(x,btns){const p=x.p,s=x.s,c=s.late?"late":s.soon?"soon":"";
+  const iv=[p.km?f(p.km,0)+" km":"",p.m?p.m+" meses":""].filter(Boolean).join(" ou ");
+  let st="",info="";
+  if(s.none){st="sem registro";info="Informe quando foi feito pela última vez."}
+  else{const parts=[];if(s.rk!=null)parts.push(s.rk<=0?"passou "+f(-s.rk,0)+" km":"faltam "+f(s.rk,0)+" km");if(s.rd!=null)parts.push(s.rd<=0?"venceu "+rel(s.rd):"vence "+rel(s.rd));
+    st=s.late?"vencido":s.soon?"em breve":(s.ed?rel(dd(today(),s.ed)):"ok");
+    info="Última: "+(s.ld?fdate(s.ld):"?")+(s.lk!=null?" · "+(s.est?"~":"")+f(s.lk,0)+" km":"")+"<br>Próxima: "+[s.nk!=null?f(s.nk,0)+" km":"",s.nd?fdate(s.nd):""].filter(Boolean).join(" ou ")+(parts.length?" ("+parts.join(", ")+")":"")}
+  return`<li class="card pl ${c} ${p.on?"":"off"}"><div class="t"><b>${esc(p.n)}</b><span class="st">${st}</span></div><div class="mut">${iv?"a cada "+iv:"sem intervalo"}</div>${s.none?"":`<div class="pb"><i style="width:${Math.min(100,Math.max(2,s.fr*100)).toFixed(0)}%"></i></div>`}<div class="mut">${info}</div>${btns?`<div class="bar end"><button type="button" class="sm" data-a="pedit" data-id="${p.k}">Editar</button>${s.none?"":`<button type="button" class="sm" data-a="ics" data-id="${p.k}">📅 Agenda</button>`}<button type="button" class="sm pri" data-a="done" data-id="${p.k}">Feito</button></div>`:""}</li>`}
+
+function vHome(){
+  const es=ents(),F=fuel(),t=today(),ym=t.slice(0,7),y1=addD(t,-365),r=rate();
+  const mes=sum(es.filter(e=>e.d.startsWith(ym))),ano=sum(es.filter(e=>e.d>y1));
+  const ab=es.filter(e=>e.t==="ab"&&e.l>0&&e.d>y1),lt=ab.reduce((a,e)=>a+e.l,0);
+  const p=kmPts();let ckt=null;if(p.length>1){const a=p[0],b=p[p.length-1];if(b[1]>a[1])ckt=sum(es.filter(e=>e.d>a[0]&&e.d<=b[0]&&e.t!=="nota"))/(b[1]-a[1])}
+  const due=dueList().filter(x=>!x.s.none).slice(0,4),bad=dueList().filter(x=>x.s.late||x.s.soon).length;
+  let h=`<div class="hero"><div><b>${F.avg?f(F.avg,2):"—"}</b><span>${F.avg?"km/L médio":"km/L: lance 2 tanques cheios com km e litros"}</span></div><div class="r"><b>${F.last?f(F.last,2):"—"}</b><span>último</span></div></div>
+  <div class="grid"><div><small>Gasto no mês</small><b>${money(mes)}</b></div><div><small>Últimos 12 meses</small><b>${money(ano)}</b></div>
+  <div><small>Combustível por km</small><b>${F.ckm?money(F.ckm):"—"}</b></div><div><small>Custo total por km</small><b>${ckt?money(ckt):"—"}</b></div>
+  <div><small>Preço médio do litro (12m)</small><b>${lt?money(sum(ab)/lt):"—"}</b></div><div><small>Média de rodagem</small><b>${r?f(r*30.44,0)+" km/mês":"—"}</b></div></div>`;
+  if(IP)h+=`<div class="tip">Instale o Rodagem como app: abre na hora e funciona sem internet. <button type="button" class="sm pri" data-a="install">Instalar</button></div>`;
+  if(!es.length)h+=`<div class="tip">Comece tocando em <b>+ Lançar</b>. Tem backup (ex.: histórico do Niun convertido)? Vá em ⚙️ Ajustes → <b>Importar backup</b>.</div>`;
+  h+=`<h2>Manutenção <small>${bad?bad+" pedindo atenção":"em dia"}</small></h2>`;
+  h+=due.length?`<ul>${due.map(x=>plCard(x,0)).join("")}</ul><div class="bar end"><button type="button" class="sm" data-a="go" data-id="plan">Ver plano completo</button></div>`:`<p class="empty">Configure o plano em <b>Manutenção</b> informando quando cada item foi feito.</p>`;
+  const ms=months(12),bm={};es.forEach(e=>{const k=e.d.slice(0,7);bm[k]=(bm[k]||0)+(e.v||0)});
+  h+=`<h2>Gastos por mês</h2><div class="card">${bars(ms.map(k=>[MES[+k.slice(5)-1].slice(0,1).toUpperCase(),bm[k]||0,mlabel(k)]),money)}<p class="cap" id="cap">Toque numa barra para ver o valor.</p></div>`;
+  const rec=es.slice().sort((a,b)=>b.d.localeCompare(a.d)||(b.km||0)-(a.km||0)).slice(0,5);
+  if(rec.length)h+=`<h2>Últimos lançamentos</h2><ul>${rec.map(e=>liE(e,F)).join("")}</ul>`;
+  return h}
+
+function vHist(){
+  const F=fuel(),all=ents(),ys=[...new Set(all.map(e=>e.d.slice(0,4)))].sort().reverse(),ts=[...new Set(all.map(e=>e.t))];
+  let L=all.filter(e=>(HF==="all"||e.t===HF)&&(!HY||e.d.startsWith(HY))).sort((a,b)=>b.d.localeCompare(a.d)||(b.km||0)-(a.km||0));
+  let h=`<div class="chips"><button type="button" data-a="hf" data-id="all" class="${HF==="all"?"on":""}">Todos</button>${Object.keys(TY).filter(k=>ts.indexOf(k)>-1).map(k=>`<button type="button" data-a="hf" data-id="${k}" class="${HF===k?"on":""}">${TY[k][1]} ${TY[k][0]}</button>`).join("")}</div>
+  <div class="chips"><button type="button" data-a="hy" data-id="" class="${HY?"":"on"}">Sempre</button>${ys.map(y=>`<button type="button" data-a="hy" data-id="${y}" class="${HY===y?"on":""}">${y}</button>`).join("")}</div>
+  <p class="mut">${L.length} lançamento(s) · total ${money(sum(L))}</p>`;
+  if(!L.length)return h+`<p class="empty">Nada por aqui.</p>`;
+  let cur="",grp=[];const out=[];
+  const flush=()=>{if(grp.length)out.push(`<div class="mh"><span>${mlabel(cur)}</span><span>${money(sum(grp))}</span></div><ul>${grp.map(e=>liE(e,F)).join("")}</ul>`)};
+  L.forEach(e=>{const k=e.d.slice(0,7);if(k!==cur){flush();cur=k;grp=[]}grp.push(e)});flush();
+  return h+out.join("")}
+
+function vPlan(){
+  const L=dueList(1);
+  let h=`<h2>Plano de manutenção <small>km atual ${f(curKm(),0)}</small></h2>
+  <p class="hint">Cada item vence pelo que vier primeiro: km ou tempo. Ao lançar uma Manutenção, marque o que foi feito e o lembrete reinicia sozinho. Intervalos são sugestões genéricas — confira o manual do seu carro e ajuste em “Editar”.</p>
+  <div class="bar"><button type="button" class="sm" data-a="notif">🔔 ${S.cfg.notif&&"Notification"in window&&Notification.permission==="granted"?"Notificações ativas":"Ativar notificações"}</button><button type="button" class="sm" data-a="pnew">+ Novo item</button></div>
+  <ul>${L.map(x=>plCard(x,1)).join("")}</ul>`;
+  return h}
+
+function vRep(){
+  const all=ents(),F=fuel(),t=today(),ys=[...new Set(all.map(e=>e.d.slice(0,4)))].sort().reverse();
+  const L=RP==="12m"?all.filter(e=>e.d>addD(t,-365)):all.filter(e=>e.d.startsWith(RP)),tot=sum(L);
+  const by={};L.forEach(e=>{by[e.t]=(by[e.t]||0)+(e.v||0)});const ks=Object.keys(by).filter(k=>by[k]>0).sort((a,b)=>by[b]-by[a]),mx=Math.max(...ks.map(k=>by[k]),1);
+  const ms=RP==="12m"?months(12):MES.map((m,i)=>RP+"-"+String(i+1).padStart(2,"0")),bm={};L.forEach(e=>{const k=e.d.slice(0,7);bm[k]=(bm[k]||0)+(e.v||0)});
+  let h=`<div class="chips"><button type="button" data-a="rp" data-id="12m" class="${RP==="12m"?"on":""}">Últimos 12 meses</button>${ys.map(y=>`<button type="button" data-a="rp" data-id="${y}" class="${RP===y?"on":""}">${y}</button>`).join("")}</div>
+  <div class="hero"><div><b>${money(tot)}</b><span>gasto total no período · ${L.length} lançamentos</span></div></div>
+  <h2>Por categoria</h2><div class="card hb">${ks.length?ks.map(k=>`<span>${TY[k][1]} ${TY[k][0]}</span><div><div class="b" style="width:${(by[k]/mx*100).toFixed(1)}%"></div></div><span class="v">${money(by[k])} <span class="mut">${f(by[k]/tot*100,0)}%</span></span>`).join(""):`<span class="empty">Sem gastos.</span>`}</div>
+  <h2>Por mês</h2><div class="card">${bars(ms.map(k=>[MES[+k.slice(5)-1].slice(0,1).toUpperCase(),bm[k]||0,mlabel(k)]),money)}<p class="cap" id="cap">Toque numa barra para ver o valor.</p></div>
+  <h2>Consumo (km/L) <small>${F.avg?"média "+f(F.avg,2):""}</small></h2><div class="card">${line(F.ser,v=>f(v,2)+" km/L","Consumo ao longo do tempo")}</div>`;
+  const pp=all.filter(e=>e.t==="ab"&&e.l>0).sort((a,b)=>a.d.localeCompare(b.d)).map(e=>[e.d,e.v/e.l]);
+  h+=`<h2>Preço do litro</h2><div class="card">${line(pp,money,"Preço do litro ao longo do tempo")}<p class="cap" id="cap2"></p></div>`;
+  const bys=Object.keys(F.by);
+  if(bys.length)h+=`<h2>Por combustível</h2><div class="grid">${bys.map(k=>{const b=F.by[k];return`<div><small>${k==="e"?"Etanol":k==="g"?"Gasolina":COMB[k]}</small><b>${f(b.k/b.l,2)} km/L</b><br><small>${money(b.c/b.k)}/km · ${f(b.k,0)} km medidos</small></div>`}).join("")}</div>`;
+  h+=`<h2>Etanol ou gasolina?</h2><div class="card"><div class="row"><label>Gasolina R$/L<input id="cg" inputmode="decimal" placeholder="0,00"></label><label>Etanol R$/L<input id="ce" inputmode="decimal" placeholder="0,00"></label></div><p class="hint" id="cr" style="margin:0">${F.by.e&&F.by.g?"Usando o seu consumo real medido.":"Usando a regra dos 70% até você ter consumo medido com os dois."}</p></div>`;
+  return h}
+
+function vSet(){
+  const c=car();
+  return`<h2>Veículos</h2><ul>${S.cars.map(x=>`<li class="e" data-a="cedit" data-id="${x.id}"><span class="ic">🚗</span><div><b>${esc(x.nome)}</b><small>${esc(x.placa||"sem placa")} · ${f(x.id===c.id?curKm():x.km||0,0)} km</small></div><div class="r">${x.id===S.car?"<small>atual</small>":""}</div></li>`).join("")}</ul>
+  <div class="bar end"><button type="button" class="sm" data-a="cnew">+ Adicionar veículo</button></div>
+  <h2>Leitura de fotos</h2><div class="card">
+  <p class="hint">Sem chave, o app usa OCR no próprio aparelho (baixa ~4 MB na primeira vez e depois funciona offline). Ele lê bem notas fiscais, mas erra com os dígitos de LCD das bombas. Com uma chave da API Anthropic (Claude), a leitura de bomba e de nota fica bem mais precisa; cada foto custa frações de centavo e é enviada só para a Anthropic.</p>
+  <label>Chave da API Anthropic (opcional)<input id="s_key" type="password" autocomplete="off" value="${esc(S.cfg.key)}" placeholder="sk-ant-..."></label>
+  <label>Modelo<select id="s_model">${[["claude-opus-5-5","Claude Opus 5.5 (mais preciso)"],["claude-haiku-5-5","Claude Haiku 5.5 (mais barato)"]].map(o=>`<option value="${o[0]}" ${S.cfg.model===o[0]?"selected":""}>${o[1]}</option>`).join("")}</select></label>
+  <div class="bar end"><button type="button" class="sm pri" data-a="skey">Salvar</button></div></div>
+  <h2>Aparência</h2><div class="chips">${[["","Automático"],["light","Claro"],["dark","Escuro"]].map(o=>`<button type="button" data-a="theme" data-id="${o[0]}" class="${(S.cfg.theme||"")===o[0]?"on":""}">${o[1]}</button>`).join("")}</div>
+  <h2>Backup</h2><div class="card"><p class="hint">Os dados ficam só neste aparelho. Faça backup de vez em quando (o arquivo não inclui a chave da API).${S.cfg.bk?" Último backup: "+fdate(S.cfg.bk)+".":""}</p>
+  <div class="bar"><button type="button" class="sm" data-a="exj">⬇️ Backup (.json)</button><button type="button" class="sm" data-a="exc">⬇️ Planilha (.csv)</button><button type="button" class="sm" data-a="imp">⬆️ Importar backup</button></div>
+  <p class="hint" style="margin:0">Importar .json substitui tudo. Importar .csv (formato do app antigo: data;km;litros;valor;cheio) adiciona abastecimentos.</p></div>
+  ${IP?`<h2>Instalar</h2><button type="button" class="pri" data-a="install">Instalar app no aparelho</button>`:""}
+  <h2>Zona de perigo</h2><button type="button" class="sm dang" data-a="wipe">Apagar todos os dados</button>
+  <p class="mut" style="margin-top:24px">Rodagem · sem anúncios, sem rastreio, sem servidor.</p>`}
+
+const VIEWS={home:vHome,hist:vHist,plan:vPlan,rep:vRep,set:vSet};
+function view(){const v=location.hash.slice(1);return VIEWS[v]?v:"home"}
+function render(){
+  const v=view(),c=car();
+  $("#hcar").innerHTML=S.cars.length>1?`<select id="csel" aria-label="Veículo">${S.cars.map(x=>`<option value="${x.id}" ${x.id===S.car?"selected":""}>${esc(x.nome)}</option>`).join("")}</select><small>${esc(c.placa)}</small>`:`<b>${esc(c.nome)}</b><small>${esc(c.placa)}</small>`;
+  $("#hkm").textContent=f(curKm(),0)+" km";
+  V.innerHTML=VIEWS[v]();
+  const n=dueList().filter(x=>x.s.late).length;
+  D.querySelectorAll("nav [data-id]").forEach(b=>{b.classList.toggle("on",b.dataset.id===v);if(b.dataset.id==="plan")b.innerHTML=`<i>🔧</i>Manutenção${n?`<span class="dot">${n}</span>`:""}`});
+}
+
+/* ---------- formulários ---------- */
+const open=h=>{FRM.innerHTML=h;if(!DLG.open)DLG.showModal()};
+const inp=(id,lab,val,type,mode,ph)=>`<label>${lab}<input id="f_${id}" type="${type||"text"}" ${mode?`inputmode="${mode}"`:""} autocomplete="off" value="${esc(val)}" placeholder="${esc(ph||"")}"></label>`;
+const row=(...a)=>{a=a.filter(Boolean);return a.length>1?`<div class="row">${a.join("")}</div>`:a.join("")};
+const fmsg=t=>{const m=$("#fmsg");m.textContent=t;m.className="hint err";return false};
+function openNew(){open(`<h3>O que você quer lançar?</h3><div class="tg">${Object.keys(TY).map(k=>`<button type="button" data-a="nt" data-id="${k}"><i>${TY[k][1]}</i>${TY[k][0]}</button>`).join("")}</div><div class="bar end"><button type="button" data-a="close">Cancelar</button></div>`)}
+function openForm(t,e,pre){
+  e=e||{};ED={t,id:e.id||null};TRI=[];const ab=t==="ab",c=car(),ck=curKm();
+  const lastC=(ents().filter(x=>x.t==="ab"&&x.comb).sort((a,b)=>b.d.localeCompare(a.d))[0]||{}).comb||"g";
+  let h=`<h3>${TY[t][1]} ${e.id?"Editar":"Novo"}: ${TY[t][0]}</h3>`;
+  if(ab)h+=`<div class="bar"><label class="btn sm">📷 Fotografar<input type="file" accept="image/*" capture="environment" data-ph hidden></label><label class="btn sm">🖼️ Da galeria<input type="file" accept="image/*" data-ph hidden></label></div><p class="hint" id="phs">Foto da bomba ou da nota fiscal preenche os campos. ${S.cfg.key?"Leitura com IA (Claude).":"Leitura offline (OCR); para a bomba, a IA é mais precisa (Ajustes)."}</p>`;
+  const kmF=inp("km","Km no painel"+(ab?"":" (opcional)"),e.km?f(e.km,0):"","text","numeric",ck?"Último: "+f(ck,0):"");
+  if(ab)h+=row(kmF,inp("d","Data",e.d||today(),"date"))+row(inp("l","Litros",e.l?f(e.l,3):"","text","decimal","0,000"),inp("p","Preço por litro",e.l?f(e.v/e.l,3):"","text","decimal","0,000"))
+    +row(inp("v","Valor pago (R$)",e.v?f(e.v,2):"","text","decimal","0,00"),`<label>Combustível<select id="f_comb">${Object.keys(COMB).map(k=>`<option value="${k}" ${(e.comb||lastC)===k?"selected":""}>${COMB[k]}</option>`).join("")}</select></label>`)
+    +`<label class="chk"><input id="f_cheio" type="checkbox" ${e.cheio===false?"":"checked"}> Completou o tanque</label><p class="hint">O km/L é calculado entre dois abastecimentos de tanque cheio.</p>`;
+  else h+=row(inp("d","Data",e.d||today(),"date"),inp("v",t==="nota"?"Valor (opcional)":"Valor (R$)",e.v?f(e.v,2):"","text","decimal","0,00"))+kmF;
+  if(t==="man"){const sel=e.it||pre||[];h+=`<p class="hint" style="margin-bottom:6px">O que foi feito? (reinicia os lembretes)</p><div class="its">${c.p.map(p=>`<label class="chk"><input type="checkbox" name="it" value="${p.k}" ${sel.indexOf(p.k)>-1?"checked":""}>${esc(p.n)}</label>`).join("")}</div>`}
+  const lk=c.p.find(p=>p.t===t);if(lk)h+=`<p class="hint">Este lançamento atualiza o lembrete “${esc(lk.n)}”.</p>`;
+  h+=`<label>${t==="nota"?"Anotação":ab?"Posto / observações":t==="multa"?"Infração, local, pontos":"Descrição / local"}<textarea id="f_n" rows="2">${esc(e.n)}</textarea></label>
+  <p id="fmsg" class="hint"></p><div class="bar end">${e.id?`<button type="button" class="dang" data-a="del">Apagar</button><span class="sp"></span>`:""}<button type="button" data-a="close">Cancelar</button><button class="pri" data-a="save" type="button">Salvar</button></div>`;
+  open(h);
+}
+function tri(k){
+  if(!$("#f_l"))return;TRI=[k].concat(TRI.filter(x=>x!==k)).slice(0,2);
+  const tg=["l","v","p"].find(x=>TRI.indexOf(x)<0),g=x=>num($("#f_"+x).value),l=g("l"),v=g("v"),p=g("p");
+  if(TRI.length<2)return;
+  if(tg==="p"&&l>0&&v>0)$("#f_p").value=f(v/l,3);else if(tg==="v"&&l>0&&p>0)$("#f_v").value=f(l*p,2);else if(tg==="l"&&v>0&&p>0)$("#f_l").value=f(v/p,3);
+}
+function saveForm(){
+  const t=ED.t,g=id=>$("#f_"+id),d=g("d").value||today(),km=num(g("km").value),v=num(g("v").value),n=g("n").value.trim();
+  const o={id:ED.id||uid(),c:S.car,t,d,v:v>0?v:0};if(n)o.n=n;if(km>0)o.km=km;
+  if(t!=="nota"&&!(v>0))return fmsg("Informe o valor.");
+  if(t==="ab"){const l=num(g("l").value);if(!(l>0))return fmsg("Informe os litros (ou valor e preço por litro).");if(!(km>0))return fmsg("Informe o km do painel para calcular o consumo.");
+    o.l=l;o.cheio=g("cheio").checked;o.comb=g("comb").value;
+    if(ents().some(e=>e.id!==o.id&&e.t==="ab"&&e.km===km))return fmsg("Já existe um abastecimento com esse km.")}
+  if(t==="man")o.it=[...FRM.querySelectorAll("[name=it]:checked")].map(x=>x.value);
+  if(o.km){const b=ents().find(e=>e.id!==o.id&&e.km>0&&((e.d<d&&e.km>o.km)||(e.d>d&&e.km<o.km)));
+    if(b)return fmsg(`Km incoerente com ${TY[b.t][0]} de ${fdate(b.d)} (${f(b.km,0)} km). Confira data e km.`)}
+  const i=S.e.findIndex(e=>e.id===o.id);if(i>=0)S.e[i]=o;else S.e.push(o);
+  const c=car();if(o.km>(c.km||0)&&d>=(c.kmd||"")){c.km=o.km;c.kmd=d}
+  save();DLG.close();toast(i>=0?"Alterado.":"Salvo.");render();
+}
+function planForm(k){const c=car(),p=c.p.find(x=>x.k===k)||{k:"",n:"",km:"",m:12,on:1};ED={plan:k||null};
+  open(`<h3>${k?"Editar item":"Novo item de manutenção"}</h3>${inp("n","Nome",p.n)}${row(inp("km","A cada (km)",p.km?f(p.km,0):"","text","numeric","0 = só tempo"),inp("m","Ou a cada (meses)",p.m||"","text","numeric","0 = só km"))}
+  <p class="hint" style="margin-bottom:6px">Última vez feito (use se não houver lançamento registrado):</p>${row(inp("bd","Data",p.bd||"","date"),inp("bk","Km",p.bk?f(p.bk,0):"","text","numeric"))}
+  <label class="chk"><input id="f_on" type="checkbox" ${p.on?"checked":""}> Lembrar deste item</label><p id="fmsg" class="hint"></p>
+  <div class="bar end">${k?`<button type="button" class="dang" data-a="pdel">Excluir</button><span class="sp"></span>`:""}<button type="button" data-a="close">Cancelar</button><button type="button" class="pri" data-a="psave">Salvar</button></div>`)}
+function carForm(id){const c=S.cars.find(x=>x.id===id)||{};ED={car:id||null};
+  open(`<h3>${id?"Editar veículo":"Novo veículo"}</h3>${inp("nome","Nome / modelo",c.nome||"")}${row(inp("placa","Placa",c.placa||""),inp("tanque","Tanque (L)",c.tanque||"","text","decimal"))}
+  ${row(inp("ini","Data da compra (opcional)",c.ini||"","date"),inp("kmi","Km na compra",c.kmi?f(c.kmi,0):"","text","numeric"))}<p id="fmsg" class="hint"></p>
+  <div class="bar end">${id&&S.cars.length>1?`<button type="button" class="dang" data-a="cdel">Excluir</button><span class="sp"></span>`:""}${id&&id!==S.car?`<button type="button" data-a="cuse">Usar este</button>`:""}<button type="button" data-a="close">Cancelar</button><button type="button" class="pri" data-a="csave">Salvar</button></div>`)}
+
+/* ---------- foto → campos ---------- */
+async function shrink(file,max){const b=await createImageBitmap(file),k=Math.min(1,max/Math.max(b.width,b.height)),c=D.createElement("canvas");
+  c.width=Math.round(b.width*k);c.height=Math.round(b.height*k);c.getContext("2d").drawImage(b,0,0,c.width,c.height);b.close&&b.close();return c}
+function nO(s){s=s.replace(/\s/g,"");return s.indexOf(",")>-1&&s.indexOf(".")>-1?parseFloat(s.replace(/\./g,"").replace(",",".")):parseFloat(s.replace(",","."))}
+function parseTxt(t){
+  const T=t.toUpperCase(),ns=[...new Set((T.match(/\d{1,3}(?:\.\d{3})*,\d{2,3}|\d+[.,]\d{2,3}/g)||[]).map(nO).filter(x=>x>0))].slice(0,60),r={};
+  let best=null;for(const a of ns)for(const b of ns)for(const c of ns){if(a===b||b===c||a===c||c<2.5||c>12||b<.5||b>200||a<2)continue;const e=Math.abs(a-b*c)/a;if(e<.02&&(!best||e<best.e))best={e,v:a,l:b,p:c}}
+  if(best){r.v=best.v;r.l=best.l;r.p=best.p}
+  if(!r.v){const m=T.match(/(?:VALOR\s*A\s*PAGAR|VALOR\s*PAGO|TOTAL)[^\d]{0,20}(\d+[.,]\d{2})/);if(m)r.v=nO(m[1])}
+  if(!r.l){const m=T.match(/(\d+[.,]\d{2,3})\s*(?:L\b|LT|LITROS)/);if(m)r.l=nO(m[1])}
+  const dm=T.match(/(\d{2})\/(\d{2})\/(\d{4}|\d{2})\b/);if(dm&&+dm[2]>=1&&+dm[2]<=12)r.d=(dm[3].length===2?"20"+dm[3]:dm[3])+"-"+dm[2]+"-"+dm[1];
+  r.comb=/ETANOL|ALCOOL|ÁLCOOL/.test(T)?"e":/DIESEL/.test(T)?"d":/\bGNV\b/.test(T)?"gnv":/ADITIVADA|PODIUM|V-POWER|PREMIUM/.test(T)?"ga":/GASOLINA/.test(T)?"g":"";
+  return r}
+async function ocr(cv){
+  if(!window.Tesseract)await new Promise((ok,no)=>{const s=D.createElement("script");s.src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";s.onload=ok;s.onerror=()=>no(Error("sem internet para baixar o leitor offline"));D.head.appendChild(s)});
+  const x=cv.getContext("2d"),im=x.getImageData(0,0,cv.width,cv.height),a=im.data;
+  for(let i=0;i<a.length;i+=4){const g=a[i]*.3+a[i+1]*.59+a[i+2]*.11,v=g>140?255:g<90?0:(g-90)*5.1;a[i]=a[i+1]=a[i+2]=v}x.putImageData(im,0,0);
+  TW=TW||await Tesseract.createWorker("por");const r=await TW.recognize(cv);return parseTxt(r.data.text)}
+const SCH={type:"object",additionalProperties:false,required:["litros","valor_total","preco_litro","data","combustivel","posto","km"],properties:{litros:{type:"number"},valor_total:{type:"number"},preco_litro:{type:"number"},data:{type:"string"},combustivel:{type:"string",enum:["g","ga","e","d","gnv",""]},posto:{type:"string"},km:{type:"number"}}};
+async function ai(cv){
+  const m=S.cfg.model||"claude-opus-5-5",h={"content-type":"application/json","x-api-key":S.cfg.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"};
+  const body={model:m,max_tokens:4000,output_config:{effort:"low",format:{type:"json_schema",schema:SCH}},messages:[{role:"user",content:[
+    {type:"image",source:{type:"base64",media_type:"image/jpeg",data:cv.toDataURL("image/jpeg",.85).split(",")[1]}},
+    {type:"text",text:"Foto do visor de uma bomba de combustível ou de uma nota/cupom fiscal de posto no Brasil. Extraia: litros abastecidos, valor total pago em reais, preço por litro, data (AAAA-MM-DD), combustível (g=gasolina comum, ga=gasolina aditivada/premium, e=etanol, d=diesel, gnv=GNV), nome do posto e km do odômetro se aparecer. Use 0 ou \"\" para o que não estiver visível. Não invente valores."}]}]};
+  if(!/haiku/.test(m)){h["anthropic-beta"]="server-side-fallback-2026-07-01";body.fallbacks="default"}
+  const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:h,body:JSON.stringify(body)}),j=await r.json().catch(()=>({}));
+  if(!r.ok)throw Error((j.error&&j.error.message)||"erro "+r.status);
+  if(j.stop_reason==="refusal")throw Error("a IA não processou esta imagem");
+  const tx=(j.content||[]).find(b=>b.type==="text");if(!tx)throw Error("resposta vazia");const o=JSON.parse(tx.text);
+  return{l:o.litros,v:o.valor_total,p:o.preco_litro,d:/^\d{4}-\d\d-\d\d$/.test(o.data)?o.data:"",comb:o.combustivel,posto:o.posto,km:o.km}}
+async function photo(file){
+  const st=$("#phs");st.textContent="Lendo a foto…";st.className="hint";
+  try{const cv=await shrink(file,S.cfg.key?1568:1800),r=S.cfg.key?await ai(cv):await ocr(cv);if(!$("#f_l"))return;
+    if(!r.p&&r.l>0&&r.v>0)r.p=r.v/r.l;if(!r.l&&r.v>0&&r.p>0)r.l=r.v/r.p;if(!r.v&&r.l>0&&r.p>0)r.v=r.l*r.p;
+    const set=(id,v,d)=>{if(v>0)$("#f_"+id).value=f(v,d)};set("l",r.l,3);set("v",r.v,2);set("p",r.p,3);
+    if(r.d&&r.d<=today())$("#f_d").value=r.d;if(r.km>0&&!$("#f_km").value)$("#f_km").value=f(r.km,0);
+    if(r.comb&&COMB[r.comb])$("#f_comb").value=r.comb;if(r.posto&&!$("#f_n").value)$("#f_n").value=r.posto;
+    const ok=r.l>0&&r.v>0;st.textContent=ok?"Pronto! Confira os valores antes de salvar.":"Não consegui ler tudo. Complete o que faltou.";st.className=ok?"hint":"hint err"}
+  catch(e){st.textContent="Não consegui ler a foto: "+e.message;st.className="hint err"}}
+
+/* ---------- lembretes ---------- */
+async function notifOn(){
+  if(!("Notification"in window))return toast("Este navegador não suporta notificações.",1);
+  if(await Notification.requestPermission()!=="granted")return toast("Permissão de notificação negada.",1);
+  S.cfg.notif=1;S.cfg.nd="";save();
+  try{const r=await navigator.serviceWorker.ready;if(r.periodicSync)await r.periodicSync.register("lembretes",{minInterval:864e5})}catch(e){}
+  notify(1);render();toast("Notificações ativas. Você será avisado ao abrir o app e, quando o Android permitir, em segundo plano.")}
+function notify(force){
+  if(!S.cfg.notif||!("Notification"in window)||Notification.permission!=="granted"||!navigator.serviceWorker)return;
+  const k=today();if(!force&&S.cfg.nd===k)return;const L=dueList().filter(x=>x.s.late||x.s.soon);if(!L.length)return;
+  S.cfg.nd=k;save();navigator.serviceWorker.ready.then(r=>r.showNotification("Rodagem: manutenção",{body:L.map(x=>x.p.n+(x.s.late?" (vencido)":"")).join(", "),icon:"icon-192.png",badge:"icon-192.png",tag:"due"})).catch(()=>{})}
+function ics(k){const c=car(),p=c.p.find(x=>x.k===k),s=pst(p,curKm(),rate()),d=(s.ed||s.nd||addM(today(),1)).replace(/-/g,""),
+  st=new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z",ds=(s.nk!=null?"Previsto aos "+f(s.nk,0)+" km. ":"")+"Última vez: "+fdate(s.ld)+".";
+  dl("lembrete-"+k+".ics",["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Rodagem//PT-BR","BEGIN:VEVENT","UID:"+uid()+"@rodagem","DTSTAMP:"+st,"DTSTART;VALUE=DATE:"+d,"SUMMARY:"+c.nome+": "+p.n,"DESCRIPTION:"+ds,"BEGIN:VALARM","TRIGGER:-P7D","ACTION:DISPLAY","DESCRIPTION:"+p.n,"END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n"),"text/calendar");
+  toast("Abra o arquivo para adicionar à agenda (aviso 7 dias antes).")}
+
+/* ---------- backup ---------- */
+function exJ(){const o=JSON.parse(JSON.stringify(S));delete o.cfg.key;S.cfg.bk=today();save();dl("rodagem-backup-"+today()+".json",JSON.stringify(o),"application/json");render()}
+function exC(){const q=s=>'"'+String(s==null?"":s).replace(/"/g,'""')+'"',L=[["veiculo","data","tipo","valor","km","litros","tanque_cheio","combustivel","itens","descricao"].join(";")];
+  S.e.slice().sort((a,b)=>a.d.localeCompare(b.d)).forEach(e=>{const c=S.cars.find(x=>x.id===e.c)||{};L.push([q(c.nome),e.d,TY[e.t]?TY[e.t][0]:e.t,f(e.v||0,2),e.km?String(e.km).replace(".",","):"",e.l?String(e.l).replace(".",","):"",e.t==="ab"?(e.cheio?"1":"0"):"",e.comb?COMB[e.comb]:"",q((e.it||[]).join(",")),q(e.n)].join(";"))});
+  dl("rodagem-"+today()+".csv","\ufeff"+L.join("\r\n"),"text/csv")}
+function imp(txt,name){
+  if(/\.json$/i.test(name)||/^\s*\{/.test(txt)){let o;try{o=JSON.parse(txt)}catch(e){return toast("Arquivo JSON inválido.",1)}
+    if(!o||o.v!==2||!Array.isArray(o.e))return toast("Este JSON não é um backup do Rodagem.",1);
+    if(S.e.length&&!confirm("Substituir TODOS os dados atuais ("+S.e.length+" lançamentos) por este backup com "+o.e.length+"?"))return;
+    const key=S.cfg.key;S=o;norm();if(key)S.cfg.key=key;save();render();return toast(o.e.length+" lançamento(s) importado(s).")}
+  let n=0;txt.split(/\r?\n/).forEach(line=>{line=line.trim();if(!line||/^data/i.test(line))return;const p=line.split(";");if(p.length<4)return;
+    const km=num(p[1]),l=num(p[2]),v=num(p[3]);if(!(km>=0)||!(l>0)||!(v>0))return;
+    S.e.push({id:uid(),c:S.car,t:"ab",d:p[0].trim()||today(),km,l,v,cheio:p[4]===undefined||p[4].trim()!=="0",comb:"g"});n++});
+  if(!n)return toast("Nenhuma linha válida no CSV.",1);save();render();toast(n+" abastecimento(s) adicionados.")}
+
+/* ---------- ações ---------- */
+const g=id=>$("#f_"+id);
+const ACT={
+  go:id=>{if(DLG.open)DLG.close();location.hash=id;scrollTo(0,0)},
+  new:()=>openNew(),
+  nt:t=>openForm(t),
+  edit:id=>{const e=S.e.find(x=>x.id===id);if(e)openForm(e.t,e)},
+  close:()=>DLG.close(),
+  save:()=>saveForm(),
+  del:()=>{if(!confirm("Apagar este lançamento?"))return;S.e=S.e.filter(x=>x.id!==ED.id);save();DLG.close();toast("Apagado.");render()},
+  hf:id=>{HF=id;render()},hy:id=>{HY=id;render()},rp:id=>{RP=id;render()},
+  cap:(id,b)=>{const c=b.closest(".card").querySelector(".cap");if(c)c.textContent=id},
+  km:()=>{const x=num(prompt("Km atual no painel:",f(curKm(),0)));if(!(x>0))return;const c=car();c.km=x;c.kmd=today();save();render();toast("Km atualizado.")},
+  done:k=>{const p=car().p.find(x=>x.k===k);openForm(p.t||"man",null,[k])},
+  pedit:k=>planForm(k),pnew:()=>planForm(""),
+  psave:()=>{const n=g("n").value.trim();if(!n)return fmsg("Dê um nome ao item.");const km=num(g("km").value)||0,m=num(g("m").value)||0;if(!km&&!m)return fmsg("Informe km, meses ou ambos.");
+    const c=car();let p=c.p.find(x=>x.k===ED.plan);if(!p){p={k:"u"+uid(),t:""};c.p.push(p)}
+    Object.assign(p,{n,km,m,bd:g("bd").value,bk:num(g("bk").value)||0,on:g("on").checked?1:0});save();DLG.close();render()},
+  pdel:()=>{if(!confirm("Excluir este item do plano?"))return;const c=car();c.p=c.p.filter(x=>x.k!==ED.plan);save();DLG.close();render()},
+  ics:k=>ics(k),notif:()=>notifOn(),
+  cedit:id=>carForm(id),cnew:()=>carForm(""),
+  csave:()=>{const n=g("nome").value.trim();if(!n)return fmsg("Informe o nome.");let c=S.cars.find(x=>x.id===ED.car);if(!c){c=newCar(n);S.cars.push(c);S.car=c.id}
+    Object.assign(c,{nome:n,placa:g("placa").value.trim().toUpperCase(),tanque:num(g("tanque").value)||0,ini:g("ini").value,kmi:num(g("kmi").value)||0});save();DLG.close();render()},
+  cuse:()=>{S.car=ED.car;save();DLG.close();render()},
+  cdel:()=>{const c=S.cars.find(x=>x.id===ED.car),n=S.e.filter(e=>e.c===c.id).length;if(!confirm(`Excluir “${c.nome}” e seus ${n} lançamentos?`))return;
+    S.cars=S.cars.filter(x=>x!==c);S.e=S.e.filter(e=>e.c!==c.id);norm();save();DLG.close();render()},
+  skey:()=>{S.cfg.key=$("#s_key").value.trim();S.cfg.model=$("#s_model").value;save();toast(S.cfg.key?"Chave salva neste aparelho.":"Leitura por IA desativada.")},
+  theme:id=>{S.cfg.theme=id;theme();save();render()},
+  exj:()=>exJ(),exc:()=>exC(),imp:()=>$("#fin").click(),
+  install:async()=>{if(!IP)return;IP.prompt();await IP.userChoice;IP=null;render()},
+  wipe:()=>{if(!confirm("Apagar TODOS os dados deste aparelho? Faça um backup antes."))return;if(!confirm("Tem certeza? Não dá para desfazer."))return;localStorage.removeItem(K);load();render();toast("Dados apagados.")}
+};
+D.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;const a=ACT[b.dataset.a];if(a){e.preventDefault();a(b.dataset.id,b,e)}});
+D.addEventListener("input",e=>{const id=e.target.id;if(id==="f_l"||id==="f_v"||id==="f_p")tri(id.slice(2));else if(id==="cg"||id==="ce")calc()});
+D.addEventListener("change",e=>{const x=e.target;
+  if(x.matches("[data-ph]")&&x.files[0]){photo(x.files[0]);x.value=""}
+  else if(x.id==="csel"){S.car=x.value;save();render()}
+  else if(x.id==="fin"&&x.files[0]){const fl=x.files[0];fl.text().then(t=>imp(t,fl.name));x.value=""}});
+FRM.addEventListener("submit",e=>{e.preventDefault();if(ED&&ED.t)saveForm()});
+function calc(){const pg=num($("#cg").value),pe=num($("#ce").value),F=fuel(),r=$("#cr");if(!(pg>0)){r.textContent="Informe o preço da gasolina.";return}
+  const k=F.by.e&&F.by.g?(F.by.e.k/F.by.e.l)/(F.by.g.k/F.by.g.l):.7,lim=pg*k;
+  r.innerHTML=`Etanol compensa até <b>${money(lim)}</b> (${f(k*100,0)}% da gasolina).`+(pe>0?` Com etanol a ${money(pe)}: <b>${pe<=lim?"abasteça etanol":"abasteça gasolina"}</b>.`:"")}
+function theme(){const t=S.cfg.theme;if(t)D.documentElement.dataset.theme=t;else delete D.documentElement.dataset.theme}
+
+addEventListener("hashchange",()=>{if(DLG.open)DLG.close();render()});
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();IP=e;render()});
+addEventListener("storage",e=>{if(e.key===K){load();render()}});
+load();theme();render();
+if("serviceWorker"in navigator&&location.protocol!=="file:")addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").then(()=>{writeDue();notify()}).catch(()=>{})});
+})();
+</script>
+</body>
+</html>
